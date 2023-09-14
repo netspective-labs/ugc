@@ -1,13 +1,14 @@
-# UGC (User Generated Content) Contributions Management System
+# Universal UGC (User Generated Content) Contributions Management System
 
-The `ugc` library is a Deno module designed to facilitate the management and
+The `uugc` library is a Deno module designed to facilitate the management and
 validation of User Generated Content (UGC). With the power of Zod, it offers
 strong type validations for entities related to UGC. The module simplifies the
 process of storing contributions, making them hierarchical, and provides both
 in-memory and potentially other persistent solutions.
 
-Can be used for a variety of use-cases such as commenting system (e.g. blog
-comments), forum messages, real-time chats, sync'ing with Discord, etc.
+We call it _Universal_ UGC (`UUGC`) because it can be used for a variety of
+use-cases such as commenting system (e.g. blog comments), forum messages,
+real-time chats, sync'ing with Discord, LinkedIn, Slack, Teams, etc.
 
 ## Features
 
