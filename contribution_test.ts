@@ -40,7 +40,7 @@ Deno.test(
       id: "root1",
       content: "Root message",
       session: emailSession,
-      timestamp: new Date(),
+      created_at: new Date(),
     };
 
     const subContribution1: Contribution = {
@@ -48,7 +48,7 @@ Deno.test(
       content: "Sub message 1",
       parentId: "root1",
       session: apiSession,
-      timestamp: new Date(),
+      created_at: new Date(),
     };
 
     const subContribution2: Contribution = {
@@ -56,7 +56,7 @@ Deno.test(
       content: "Sub message 2",
       parentId: "sub1",
       session: oAuthSession,
-      timestamp: new Date(),
+      created_at: new Date(),
     };
 
     // Inserting contributions
@@ -69,7 +69,7 @@ Deno.test(
       reactionId: "sub1-react1",
       reaction: "like",
       session: subContribution1.session,
-      timestamp: new Date(),
+      created_at: new Date(),
     });
 
     assertEquals(
@@ -133,7 +133,7 @@ Deno.test(
       id: "contribution1",
       content: "Sample contribution",
       session: emailSession,
-      timestamp: new Date(),
+      created_at: new Date(),
     };
 
     await interaction.postContribution(sampleContribution);

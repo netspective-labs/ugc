@@ -3,56 +3,9 @@
  * a variety of use-cases such as commenting system (e.g. blog comments), forum
  * messages, chats, etc.
  *
- * Schemas and Types:
- *    - Using Zod for defining and inferring types for entities like Parties,
- *      Contributions, and their relationships so that user-supplied can be
- *      parsed and validated before persisting.
- *
- * Entities
- *    - Party: An entity which can be a Person or an Organization.
- *    - Contribution: User-generated content with optional parent linking,
- *      making it hierarchical.
- *    - Contribution Target: The target entity to which a contribution is related.
- *      This could be a URL for a content (e.g. a blog post comment), it could
- *      be another thread (in case one message is a reply to another like in
- *      Discord, etc.).
- *    - Contribution Session: Represents user activity with authentication and
- *      user agent details.
- *    - Contribution Reaction: a `like` or other reaction to a contribution.
- *    - TODO: Contribution Folksonomy: tagging and other organizing capabilities.
- *
- * Persistence Strategies
- *    - ContributionSessionPersistenceStrategy: Interface defining CRUD operations
- *      on authenticated sessions.
- *    - ContributionPersistenceStrategy: Interface defining CRUD operations on
- *      contributions.
- *    - ContributionTargetRelationshipPersistenceStrategy: Interface defining CRUD
- *      operations on the relationship between contributions and their targets.
- *
- * Interaction and Presentation Strategies
- *    - ContributionInteractionStrategy: Interface defining methods for posting
- *      and fetching contributions (this is the "business logic").
- *    - ContributionPresentationStrategy: Interface for rendering contributions
- *      and threads (this is the "presentation logic").
- *
- * In-memory Implementations (mainly for demonstrations and examples)
- *    - ContributionMemoryPersistence: An in-memory data store and CRUD implementation
- *      for contributions.
- *    - ContributionTargetRelationshipMemoryPersistence: An in-memory data store and
- *      CRUD implementation for contribution-target relationships.
- *    - TypicalContributionInteraction: A class implementing both interaction and
- *      presentation strategies. It uses in-memory stores by default.
- *
- * Notes:
- *    - Try and keep this file runtime-dependencies free (meaning no Deno, NodeJS, or
- *      Bun-specific functionality). Put Deno, NodeJS, and Bun deps into separate files.
- *    - Contributions are stored flat with reference to parent IDs but can be
- *      read hierarchically. This strategy is useful so that contributions may be
- *      easily stored in memory, in Key/Value databases, in relational databases, or
- *      in document databases -- making the persistence truly independent.
- *    - Uses asynchronous methods to simulate real-world database operations.
- *    - Provides rendering logic to represent contributions in a simple string
- *      format (for debugging).
+ * Try and keep this file runtime-dependencies free (meaning no Deno, NodeJS, or
+ * Bun-specific functionality). Put Deno, NodeJS, and Bun deps into separate
+ * files.
  */
 
 import { z } from "zod";
@@ -123,12 +76,16 @@ export type ContributionSession = z.infer<typeof contributionSessionSchema>;
 export const contributionSchema = z.object({
   // TODO: add discriminated union to support all kinds of UGC like blog post
   //       comments, audio/video, chat messages, and other Disqus- and discord-like
-  //       capabilities
+  //       capabilities (also design Slack, Discord, Teams, etc. integrations so
+  //       that we can use this library as a sink/source for sync'ing with Discord);
+  //       also figure out how to store lineage data (e.g. manual entry, sync from
+  //       Discord, etc.);
+  //       determine how we can store LinkedIn shares sync, Tweets sync, etc.
   id: contributionIDSchema,
   content: z.string(),
   session: contributionSessionSchema,
   parentId: contributionIDSchema.optional(),
-  timestamp: z.date(),
+  created_at: z.date(),
 });
 export type Contribution = z.infer<typeof contributionSchema>;
 
@@ -137,7 +94,7 @@ export const contributionReactionSchema = z.object({
   contributionId: contributionIDSchema,
   reaction: z.string(),
   session: contributionSessionSchema,
-  timestamp: z.date(),
+  created_at: z.date(),
 });
 export type ContributionReaction = z.infer<typeof contributionReactionSchema>;
 export type ContributionReactions = ContributionReaction[];
@@ -149,6 +106,12 @@ export type HierarchicalContribution = Contribution & {
 export type ContributionThread = HierarchicalContribution[];
 
 export const contributionTargetSchema = z.object({
+  // TODO: create a discriminated union that would allow different
+  //       target types like URL for blog post comments, URL for
+  //       Wiki comments, channel name for chats, Discord sync'ing,
+  //       etc. and need to figure out how to mimic hierarchical
+  //       channels or channels that belong to categories, etc.
+  //       (could contribution target just be hierarchical?)
   targetID: contributionTargetIDSchema,
 });
 export type ContributionTarget = z.infer<typeof contributionTargetSchema>;
