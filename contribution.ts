@@ -44,6 +44,8 @@
  *      presentation strategies. It uses in-memory stores by default.
  *
  * Notes:
+ *    - Try and keep this file runtime-dependencies free (meaning no Deno, NodeJS, or
+ *      Bun-specific functionality). Put Deno, NodeJS, and Bun deps into separate files.
  *    - Contributions are stored flat with reference to parent IDs but can be
  *      read hierarchically. This strategy is useful so that contributions may be
  *      easily stored in memory, in Key/Value databases, in relational databases, or
