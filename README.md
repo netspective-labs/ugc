@@ -8,7 +8,8 @@ in-memory and potentially other persistent solutions.
 
 We call it _Universal_ UGC (`UUGC`) because it can be used for a variety of
 use-cases such as commenting system (e.g. blog comments), forum messages,
-real-time chats, sync'ing with Discord, LinkedIn, Slack, Teams, etc.
+real-time chats, sync'ing with Discord, LinkedIn, Slack, Teams, etc. and
+integrating Hypothes.is and other annotation platforms.
 
 ## Features
 
@@ -54,7 +55,10 @@ real-time chats, sync'ing with Discord, LinkedIn, Slack, Teams, etc.
 - Contribution Session: Represents user activity with authentication and user
   agent details.
 - Contribution Reaction: a `like` or other reaction to a contribution.
+- TODO: Multi-tenancy capabilties
 - TODO: Contribution Folksonomy: tagging and other organizing capabilities.
+- TODO: Annotation integration with Hypothes.is.
+- TODO: Feature flags and configuration management
 
 ### Persistence Strategies
 
